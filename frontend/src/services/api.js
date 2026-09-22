@@ -1,6 +1,19 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+let rawUrl = import.meta.env.VITE_API_URL || '/api';
+
+if (rawUrl && rawUrl !== '/api') {
+  // If it doesn't start with http/https, prefix with https://
+  if (!rawUrl.startsWith('http://') && !rawUrl.startsWith('https://')) {
+    rawUrl = `https://${rawUrl}`;
+  }
+  // If it doesn't end with /api, append /api
+  if (!rawUrl.endsWith('/api')) {
+    rawUrl = rawUrl.replace(/\/+$/, '') + '/api';
+  }
+}
+
+const API_BASE_URL = rawUrl;
 
 const api = axios.create({
   baseURL: API_BASE_URL,

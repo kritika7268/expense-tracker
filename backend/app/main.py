@@ -28,6 +28,13 @@ async def lifespan(app: FastAPI):
     try:
         init_db()
         logger.info("EXPENSELY database initialized successfully.")
+        # Auto-seed initial demo user and data if fresh database
+        try:
+            from scripts.seed import seed_database
+            seed_database()
+            logger.info("EXPENSELY initial seed data populated/verified.")
+        except Exception as se:
+            logger.info(f"Database seed note: {se}")
     except Exception as e:
         logger.error(f"Error during database initialization: {e}")
     yield
@@ -44,13 +51,23 @@ app = FastAPI(
 )
 
 # CORS Middleware
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+origins = settings.cors_origins_list
+if "*" in origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origin_regex=r".*",
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 # Custom Error Handlers returning standard format
 @app.exception_handler(StarletteHTTPException)
