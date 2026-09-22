@@ -1,5 +1,7 @@
 # EXPENSELY — Track. Understand. Save.
 
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-expensely--frontend.onrender.com-00C7B7?style=for-the-badge&logo=render&logoColor=white)](https://expensely-frontend.onrender.com)
+
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.14-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB.svg?style=flat&logo=react&logoColor=black)](https://react.dev)
@@ -8,6 +10,9 @@
 [![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1.svg?style=flat&logo=mysql&logoColor=white)](https://www.mysql.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+> 🌐 **Live Demo:** **[https://expensely-frontend.onrender.com](https://expensely-frontend.onrender.com)**  
+> 🔑 **Demo Account:** `demo@expensely.com` &nbsp;|&nbsp; `Demo@12345`  
+> 
 > **"Track. Understand. Save."**  
 > A production-grade, full-stack personal finance application built with FastAPI, SQLAlchemy, React, Tailwind CSS, and MySQL. Designed as a serious portfolio project showcasing end-to-end full-stack development, decimal-safe financial calculations, multi-tenant data isolation, budgeting guardrails with automated alerts, interactive Recharts visualizations, and CSV exports.
 
