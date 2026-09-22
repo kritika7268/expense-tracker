@@ -97,7 +97,12 @@ async def general_exception_handler(request: Request, exc: Exception):
         content={"success": False, "message": "An internal server error occurred. Please try again later."},
     )
 
-# Health Check
+# Root & Health Check
+@app.get("/", tags=["General"])
+def root():
+    return {"success": True, "message": "Expensely API is running smoothly", "docs": "/docs"}
+
+@app.get("/health", tags=["Health"])
 @app.get("/api/health", tags=["Health"])
 def health_check():
     return {"success": True, "message": "Expensely API is running smoothly", "status": "healthy"}
