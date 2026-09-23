@@ -1,136 +1,201 @@
-# EXPENSELY — Track. Understand. Save.
+# EXPENSELY — Track. Understand. Save. 💳
+### Full-Stack Personal Financial Analytics & Budgeting Platform
 
 [![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-expensely--frontend.onrender.com-00C7B7?style=for-the-badge&logo=render&logoColor=white)](https://expensely-frontend.onrender.com)
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/kritika7268/expense-tracker)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?style=for-the-badge&logo=fastapi&logoColor=white)](https://expensely-backend-0s6w.onrender.com/docs)
+[![React](https://img.shields.io/badge/React-18.3-61DAFB.svg?style=for-the-badge&logo=react&logoColor=black)](https://react.dev)
+[![MySQL](https://img.shields.io/badge/Database-MySQL_%7C_SQLite-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com)
 
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
-[![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.14-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
-[![React](https://img.shields.io/badge/React-18.3-61DAFB.svg?style=flat&logo=react&logoColor=black)](https://react.dev)
-[![Vite](https://img.shields.io/badge/Vite-6.1-646CFF.svg?style=flat&logo=vite&logoColor=white)](https://vitejs.dev)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-3.4-38B2AC.svg?style=flat&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
-[![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1.svg?style=flat&logo=mysql&logoColor=white)](https://www.mysql.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+> 🌐 **Live Application:** **[https://expensely-frontend.onrender.com](https://expensely-frontend.onrender.com)**  
+> 📡 **Live Backend API & Health Check:** **[https://expensely-backend-0s6w.onrender.com/health](https://expensely-backend-0s6w.onrender.com/health)**  
+> 📖 **API Documentation (Swagger UI):** **[https://expensely-backend-0s6w.onrender.com/docs](https://expensely-backend-0s6w.onrender.com/docs)**  
+> 🔑 **Pre-Seeded Demo Account:** `demo@expensely.com` &nbsp;|&nbsp; Password: `Demo@12345`
 
-> 🌐 **Live Demo:** **[https://expensely-frontend.onrender.com](https://expensely-frontend.onrender.com)**  
-> 🔑 **Demo Account:** `demo@expensely.com` &nbsp;|&nbsp; `Demo@12345`  
-> 
-> **"Track. Understand. Save."**  
-> A production-grade, full-stack personal finance application built with FastAPI, SQLAlchemy, React, Tailwind CSS, and MySQL. Designed as a serious portfolio project showcasing end-to-end full-stack development, decimal-safe financial calculations, multi-tenant data isolation, budgeting guardrails with automated alerts, interactive Recharts visualizations, and CSV exports.
+*Note: Hosted on Render's free tier. If the backend is inactive, please allow 30–45 seconds for container wake-up on the first request.*
 
 ---
 
-## 📌 Table of Contents
-1. [Project Overview](#-project-overview)
-2. [Key Features](#-key-features)
-3. [Technology Stack](#-technology-stack)
-4. [Architecture & Data Flow](#-architecture--data-flow)
-5. [Database Schema & ER Diagram](#-database-schema--er-diagram)
-6. [Project Structure](#-project-structure)
-7. [Installation & Getting Started](#-installation--getting-started)
-8. [Database Initialization & Demo Seed](#-database-initialization--demo-seed)
-9. [Demo Credentials](#-demo-credentials)
-10. [API Documentation](#-api-documentation)
-11. [Running Tests](#-running-tests)
-12. [Financial Math & Decimal Safety](#-financial-math--decimal-safety)
-13. [Security Highlights](#-security-highlights)
-14. [Future Scope](#-future-scope)
-15. [Author & License](#-author--license)
+## 📌 Problem Statement
+Personal financial tracking is commonly hindered by two extremes: rigid, manual spreadsheets with zero automation, or complex commercial banking apps that compromise user privacy. Furthermore, many hobbyist finance apps suffer from floating-point accumulation errors, poor data isolation between users, and an absence of proactive budget guardrails before overspending occurs.
+
+## 💡 Solution
+**Expensely** is a production-grade personal finance platform engineered with software engineering rigor:
+- **Exact Decimal Arithmetic:** Employs `Numeric(12, 2)` SQL columns and Python `Decimal` data structures, guaranteeing zero binary floating-point drift.
+- **Multi-Tenant Security:** Restricts all database transactions, budget ceilings, and categories to the authenticated JWT tenant.
+- **Budget Threshold Alerts:** Monitors monthly category spending and generates automated alert banners at 80% (`Near Limit`) and 100% (`Over Budget`).
+- **Interactive Visual Intelligence:** Delivers monthly cash-flow trends, spending breakdowns, and payment-method distributions via Recharts.
+- **Data Portability:** Provides structured CSV export capabilities for personal tax and accounting records.
 
 ---
 
-## 🚀 Project Overview
+## ✨ Features
 
-**EXPENSELY** bridges the gap between basic spreadsheet tracking and full-scale personal financial analytics. It allows individuals to record income and expenses across distinct payment methods, categorize cash flows, set monthly budget ceilings with automatic 80% and 100% threshold warnings, inspect periodic trends, and export verified financial statements.
+### 1. Authentication & Multi-Tenant Security
+- **JWT Bearer Authentication:** Secure registration and login using passlib bcrypt hashing and signed JSON Web Tokens.
+- **Database-Level Isolation:** Every query explicitly enforces `user_id == current_user.id`, preventing cross-account data leakage.
 
-Every calculation is performed using decimal-safe arithmetic on the backend, ensuring zero floating-point accumulation errors.
+### 2. Transaction Management & Ledger
+- **Full CRUD Support:** Add, update, view, and delete income and expense records.
+- **Granular Query Filtering:** Server-side filtering by category, payment method (Cash, UPI, Debit Card, Credit Card, Bank Transfer), date range, and text search.
+- **Server-Side Pagination:** Efficient paginated ledger supporting custom limit and page parameters.
 
----
+### 3. Proactive Budget Guardrails
+- **Category Caps:** Set specific monthly spending caps for custom categories.
+- **Real-Time Progress Tracking:** Visual consumption bars with dynamic status badges: `Under Budget`, `Near Limit` (≥80%), and `Over Budget` (≥100%).
+- **Dashboard Alerts:** Automated notification banners warning users when categories approach or exceed thresholds.
 
-## ✨ Key Features
+### 4. Interactive Financial Analytics
+- **Cash Flow Trends:** Monthly income vs. expense bar charts powered by Recharts.
+- **Category Breakdown:** Donut charts illustrating proportional expenditure distributions.
+- **Payment Method Distribution:** Visual breakdown of spending channels (UPI, cards, cash).
 
-- 🔐 **Authentication & Multi-Tenant Isolation**:
-  - Secure registration and login with bcrypt password hashing and signed JWT bearer tokens.
-  - Strict database-level tenant isolation: User A can never access, edit, or view User B's transactions or budgets.
-- 💳 **Transaction Ledger**:
-  - Add, edit, delete, search, filter (by type, category, payment method, date range), and sort (newest, oldest, highest, lowest).
-  - Server-side paginated queries with responsive table and card layouts.
-- 🛡️ **Budget Guardrails & Alert Thresholds**:
-  - Establish monthly category-specific spending caps.
-  - Real-time progress bars with non-judgmental status tags: `Under Budget`, `Near Limit` (at ≥80%), and `Over Budget` (at ≥100%).
-  - Automatic dashboard alert banners for budgets approaching or exceeding capacity.
-- 📊 **Real-Time Visual Analytics**:
-  - Interactive Recharts: 6-month Income vs. Expense comparison, Category Spending Donut Chart, and Savings Velocity Trendline.
-  - Top spending category rankings and executive monthly summary statements.
-- 📑 **Standardized CSV Export**:
-  - Download RFC-4180 compliant CSV exports reflecting current filters and search terms directly from the live database.
-- 🏷️ **Category Management**:
-  - Pre-seeded default categories (Salary, Freelance, Food, Transport, Bills, Shopping, etc.) plus full support for custom categories.
-  - Built-in relational safeguards: prevents accidental deletion of categories that currently have dependent transactions.
-- 🌓 **Dark Mode & Personalization**:
-  - Full dark/light appearance toggle persisted to `localStorage`.
-  - Multi-currency support (`INR ₹`, `USD $`, `EUR €`, `GBP £`) with dynamic formatting across all metrics.
+### 5. Data Portability & Customization
+- **CSV Data Export:** Generate downloadable, formatted financial statements with one click.
+- **Category Management:** Pre-seeded categories plus custom categories with relational delete protection.
+- **Theme & Personalization:** Dark/light mode toggle persisted to local storage and multi-currency formatting (`₹`, `$`, `€`, `£`).
 
 ---
 
-## 🛠️ Technology Stack
+## 📸 Screenshots
 
-| Layer | Technologies |
-| :--- | :--- |
-| **Frontend** | React 18, Vite, React Router v6, Axios, Tailwind CSS, Lucide React, Recharts |
-| **Backend** | Python 3.11+, FastAPI, SQLAlchemy 2.0, Pydantic v2, PyMySQL, PyJWT, Bcrypt |
-| **Database** | MySQL (with automatic local SQLite fallback for immediate evaluation) |
-| **Testing** | Pytest, FastAPI TestClient, HTTPX |
-| **Tooling** | PostCSS, Autoprefixer, Git |
+| Interactive Financial Dashboard | Visual Analytics & Cash Flow Trends |
+|:---:|:---:|
+| *(Capture from `http://localhost:5173/dashboard`)* | *(Capture from `http://localhost:5173/analytics`)* |
+
+| Transaction Ledger & Filter Bar | Budget Guardrails & Threshold Warnings |
+|:---:|:---:|
+| *(Capture from `http://localhost:5173/transactions`)* | *(Capture from `http://localhost:5173/budgets`)* |
+
+> 📁 *Recommended screenshot folder:* Place captured PNG files in `screenshots/` (e.g., `screenshots/dashboard.png`, `screenshots/analytics.png`, `screenshots/transactions.png`, `screenshots/budgets.png`).
 
 ---
 
-## 🏛️ Architecture & Data Flow
+## 🚀 Live Demo
+
+- **Live Frontend:** [https://expensely-frontend.onrender.com](https://expensely-frontend.onrender.com)
+- **Swagger API Docs:** [https://expensely-backend-0s6w.onrender.com/docs](https://expensely-backend-0s6w.onrender.com/docs)
+- **Demo Account:** `demo@expensely.com` / `Demo@12345`
+
+---
+
+## 🏗️ System Architecture
 
 ```mermaid
 flowchart TD
-    subgraph Client ["Client Browser (React + Vite + Tailwind)"]
-        UI["React SPA (Port 5173)"]
-        Axios["Axios Client (JWT Interceptor)"]
-        Charts["Recharts Visualizations"]
+    subgraph Client ["Frontend Layer (React 18 + Vite + Tailwind CSS)"]
+        Landing[Landing Page]
+        AuthUI[Login / Register / JWT Context]
+        Dash[Dashboard & Summary Cards]
+        TxTable[Transactions Ledger & Filters]
+        Charts[Recharts Analytics Visualizer]
+        BudgetUI[Budget Guardrails & Alert Banners]
+        AxiosClient[Axios Interceptors / Bearer Injection]
     end
 
-    subgraph Backend ["Backend Service (FastAPI - Port 8000)"]
-        Router["FastAPI Routers (/api/...)"]
-        AuthDep["OAuth2 / JWT Dependency"]
-        CalcServ["Financial Calculation Service (Decimal Safe)"]
-        ExportServ["CSV Generator Service"]
-        ORM["SQLAlchemy 2.0 ORM"]
+    subgraph Server ["Backend Layer (FastAPI on Render)"]
+        API[FastAPI Gateway / CORS Middleware]
+        AuthDep[JWT Verification Dependency get_current_user]
+        TxRouter[Transactions Router]
+        BudgetRouter[Budgets & Threshold Engine]
+        AnalyticsRouter[Analytics Aggregator]
+        ExportService[CSV Generation Service]
+        DBSession[SQLAlchemy SessionLocal]
     end
 
-    subgraph Storage ["Database Layer"]
-        MySQL[("MySQL Database: expense_tracker")]
-        SQLite[("SQLite Fallback: expense_tracker.db")]
+    subgraph Storage ["Database Layer (MySQL / SQLite Fallback)"]
+        MySQL[(MySQL 8.0 Primary)]
+        SQLite[(SQLite Failover expense_tracker.db)]
     end
 
-    UI --> Axios
-    Axios --> Router
-    Router --> AuthDep
-    Router --> CalcServ
-    Router --> ExportServ
-    CalcServ --> ORM
-    ExportServ --> ORM
-    ORM -->|Default| MySQL
-    ORM -.->|Fallback if credentials unset| SQLite
-    CalcServ --> UI
-    ExportServ --> UI
+    AuthUI --> AxiosClient
+    Dash --> AxiosClient
+    TxTable --> AxiosClient
+    Charts --> AxiosClient
+    BudgetUI --> AxiosClient
+
+    AxiosClient -- "HTTP + Authorization: Bearer <token>" --> API
+    API --> AuthDep
+    AuthDep --> TxRouter
+    AuthDep --> BudgetRouter
+    AuthDep --> AnalyticsRouter
+
+    TxRouter --> DBSession
+    BudgetRouter --> DBSession
+    AnalyticsRouter --> DBSession
+    TxRouter --> ExportService
+
+    DBSession -- "Pool Ping" --> MySQL
+    MySQL -. "Fallback on Connection Error" .-> SQLite
 ```
 
 ---
 
-## 🗄️ Database Schema & ER Diagram
+## 🔄 How It Works (Request Flow)
+1. **Authentication Flow:** User submits credentials → `POST /api/auth/login` verifies bcrypt hash → Returns signed JWT bearer token → React stores token in `localStorage` and sets default Axios authorization header.
+2. **Ledger Query Flow:** User navigates to Transactions → Axios executes `GET /api/transactions?page=1&limit=10&category_id=2` → Backend dependency extracts `user_id` from token → SQLAlchemy executes filtered query with joined category details → Response returns paginated JSON metadata + records.
+3. **Budget Evaluation Flow:** User opens Budgets or Dashboard → `GET /api/budgets/progress` runs an aggregation query summing current month expenses per category → Compares total against monthly budget cap → Evaluates threshold (`>= 80%` or `>= 100%`) → Returns calculated progress object.
+
+---
+
+## 💻 Tech Stack
+
+- **Frontend:** React 18.3, Vite 6.1, Tailwind CSS 3.4, Recharts 2.15, Axios 1.7, React Router DOM 6.28, Lucide React.
+- **Backend:** FastAPI 0.115+, Uvicorn 0.28+, SQLAlchemy 2.0, Pydantic v2, PyMySQL 1.2+, SQLite3, Passlib (Bcrypt), Python-Jose (JWT), Python-Dateutil.
+- **Testing:** Pytest 9.1+ with 13 automated tests covering auth, tenant isolation, CRUD, and calculation precision.
+- **Deployment:** Render Static Site (Frontend) + Render Web Service (Backend).
+
+---
+
+## ⚙️ Key Technical Challenges Solved
+
+### 1. Decimal-Safe Financial Precision
+- **Challenge:** Standard binary floating-point numbers (`float`) accumulate precision drift in repeated summation (e.g., `0.1 + 0.2 = 0.30000000000000004`), which is unacceptable for financial software.
+- **Implementation:** Enforced SQL `Numeric(12, 2)` throughout SQLAlchemy models and converted all arithmetic operations in `calculation_service.py` to Python's `Decimal` type with fixed two-decimal quantizing.
+- **Engineering Value:** Demonstrates awareness of real-world financial software constraints and numerical computing safety.
+
+### 2. Multi-Tenant Data Isolation and Authorization
+- **Challenge:** In multi-user applications, inadvertent omissions in authorization logic can permit horizontal privilege escalation, allowing one user to access or manipulate another's financial records.
+- **Implementation:** Implemented an authentication dependency `get_current_user` that validates the JWT bearer token. Every database query, transaction insertion, and budget lookup explicitly binds the authenticated `user_id`. Wrote dedicated unit tests in `tests/test_isolation.py` verifying that cross-tenant access attempts return 404/403.
+- **Engineering Value:** Shows security-first architecture, defensive programming, and robust automated test verification.
+
+### 3. Dynamic Dual-Engine Database Fallback
+- **Challenge:** Production cloud instances often run SQLite for free-tier hosting, while local development may use MySQL. A hardcoded connection string causes crashes when MySQL is unreachable.
+- **Implementation:** Designed a dynamic engine initializer in `app/database.py`. It runs a connection pre-ping to MySQL with a 3-second timeout. If the database is unreachable or credentials fail, it logs an informative warning and automatically initializes an SQLite instance (`expense_tracker.db`).
+- **Engineering Value:** Eliminates environment brittleness and guarantees zero-downtime deployment across heterogeneous infrastructure.
+
+---
+
+## 📡 API / Backend Endpoints
+
+| Method | Endpoint | Description | Auth Required |
+|:---|:---|:---|:---|
+| `POST` | `/api/auth/register` | Register new user account with hashed password | Public |
+| `POST` | `/api/auth/login` | Authenticate credentials and receive JWT bearer token | Public |
+| `GET` | `/api/auth/me` | Fetch authenticated user profile and preferences | Bearer JWT |
+| `GET` | `/api/dashboard/summary` | Get financial totals, balance, and active budget alerts | Bearer JWT |
+| `GET` | `/api/transactions` | Paginated transaction list with category/date filters | Bearer JWT |
+| `POST` | `/api/transactions` | Create new income or expense transaction | Bearer JWT |
+| `PUT` | `/api/transactions/{id}` | Update existing transaction record | Bearer JWT |
+| `DELETE` | `/api/transactions/{id}` | Delete transaction record | Bearer JWT |
+| `GET` | `/api/transactions/export/csv` | Download filtered transactions as formatted CSV | Bearer JWT |
+| `GET` | `/api/budgets/progress` | Retrieve monthly budget spending vs. cap progress | Bearer JWT |
+| `POST` | `/api/budgets` | Set monthly category spending budget ceiling | Bearer JWT |
+| `GET` | `/api/analytics/monthly-trends`| Monthly income vs. expense aggregate trends | Bearer JWT |
+| `GET` | `/api/analytics/category-breakdown`| Percentage breakdown of spending by category | Bearer JWT |
+
+---
+
+## 🗄️ Database / Data Model
 
 ```mermaid
 erDiagram
-    USERS ||--o{ TRANSACTIONS : "records"
-    USERS ||--o{ CATEGORIES : "owns"
-    USERS ||--o{ BUDGETS : "allocates"
-    USERS ||--|| USER_SETTINGS : "configures"
-    CATEGORIES ||--o{ TRANSACTIONS : "classifies"
-    CATEGORIES ||--o{ BUDGETS : "caps"
+    USERS ||--o{ CATEGORIES : owns
+    USERS ||--o{ TRANSACTIONS : records
+    USERS ||--o{ BUDGETS : defines
+    USERS ||--o| USER_SETTINGS : configures
+    CATEGORIES ||--o{ TRANSACTIONS : categorizes
+    CATEGORIES ||--o{ BUDGETS : limits
 
     USERS {
         int id PK
@@ -139,271 +204,166 @@ erDiagram
         string password_hash
         string currency
         datetime created_at
-        datetime updated_at
     }
 
     CATEGORIES {
         int id PK
-        int user_id FK "nullable for defaults"
+        int user_id FK
         string name
-        string type "income or expense"
+        string type
         string icon
-        datetime created_at
     }
 
     TRANSACTIONS {
         int id PK
         int user_id FK
         int category_id FK
-        string type "income or expense"
-        numeric amount "12,2"
+        string type
+        numeric amount
         string title
         text description
         date transaction_date
         string payment_method
-        datetime created_at
-        datetime updated_at
     }
 
     BUDGETS {
         int id PK
         int user_id FK
         int category_id FK
-        numeric amount "12,2"
-        int month "1-12"
+        numeric amount
+        int month
         int year
-        datetime created_at
-        datetime updated_at
     }
 
     USER_SETTINGS {
         int id PK
-        int user_id FK UK
-        string currency
-        numeric monthly_income_target "12,2"
-        datetime created_at
-        datetime updated_at
+        int user_id FK
+        string theme
+        boolean email_notifications
     }
 ```
 
 ---
 
-## 📁 Project Structure
+## 🧪 Automated Testing
+
+Expensely includes a dedicated test suite with 13 automated tests covering critical business logic:
+- `test_auth.py`: User registration, validation errors, and token generation.
+- `test_transactions.py`: Transaction creation, validation constraints, and pagination.
+- `test_budgets.py`: Budget threshold progress calculations (80% and 100% triggers).
+- `test_calculations.py`: Decimal arithmetic verification.
+- `test_isolation.py`: Cross-tenant security validation.
+- `test_export.py`: CSV generation and column header formatting.
+
+Run tests locally:
+```bash
+cd backend
+python -m pytest tests/ -v
+```
+
+---
+
+## 🛠️ Installation & Setup
+
+### Prerequisites
+- Python 3.10+
+- Node.js 18+ and npm
+- MySQL (Optional; automatically defaults to SQLite if MySQL is absent)
+
+### 1. Clone Repository
+```bash
+git clone https://github.com/kritika7268/expense-tracker.git
+cd expense-tracker
+```
+
+### 2. Backend Setup
+```bash
+cd backend
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Linux/macOS:
+source venv/bin/activate
+
+pip install -r requirements.txt
+python -m uvicorn app.main:app --reload --port 8000
+```
+*Backend runs at `http://127.0.0.1:8000` (API Docs: `http://127.0.0.1:8000/docs`).*
+
+### 3. Frontend Setup
+In a new terminal:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*Frontend runs at `http://localhost:5173`.*
+
+---
+
+## 🔐 Environment Variables
+
+### Backend (`backend/.env.example`)
+```env
+# Database Configuration (Defaults to SQLite if MySQL is not available)
+DATABASE_URL=mysql+pymysql://root:YOUR_PASSWORD@localhost:3306/expense_tracker
+
+# JWT Security
+SECRET_KEY=change_this_secret_key_to_a_random_32_character_string
+ACCESS_TOKEN_EXPIRE_MINUTES=1440
+
+# Environment
+ENVIRONMENT=development
+```
+
+### Frontend (`frontend/.env.example`)
+```env
+VITE_API_URL=http://127.0.0.1:8000/api
+```
+
+---
+
+## 🗺️ Future Improvements
+- **Recurring Transactions Cron:** Scheduled automated deductions for monthly subscriptions and recurring salary entries.
+- **Receipt OCR Parsing:** Mobile image upload for automated receipt line-item scanning.
+- **Multi-Currency Conversion:** Dynamic real-time exchange rates for international travelers.
+
+---
+
+## 📂 Project Structure
 
 ```
 expense-tracker/
-│
 ├── backend/
 │   ├── app/
-│   │   ├── __init__.py
-│   │   ├── main.py               # FastAPI application setup, CORS & error handlers
-│   │   ├── database.py           # SQLAlchemy engine, session maker & SQLite fallback
-│   │   ├── config.py             # Pydantic Settings & environment variables
-│   │   ├── models/               # User, Category, Transaction, Budget, UserSettings
-│   │   ├── schemas/              # Request/response validation schemas
-│   │   ├── routers/              # Auth, Transactions, Budgets, Analytics, Dashboard, Profile
-│   │   ├── services/             # Calculation, Export, and Seeding services
-│   │   └── utils/                # Password hashing, JWT helpers, dependencies
-│   ├── scripts/
-│   │   └── seed.py               # Database seeder with realistic demo data
-│   ├── tests/                    # Pytest test suite (13 comprehensive tests)
-│   ├── requirements.txt
-│   ├── .env.example
-│   └── README.md
-│
+│   │   ├── models/          # SQLAlchemy ORM models (User, Transaction, Budget, Category)
+│   │   ├── routers/         # FastAPI route handlers (auth, transactions, budgets, analytics)
+│   │   ├── schemas/         # Pydantic validation schemas
+│   │   ├── services/        # Business logic (calculations, CSV exports)
+│   │   ├── utils/           # Security, password hashing, JWT dependencies
+│   │   ├── config.py        # Environment settings and CORS configuration
+│   │   ├── database.py      # Dual-engine connection manager (MySQL + SQLite failover)
+│   │   └── main.py          # Application entry point and exception handlers
+│   ├── tests/               # 13 automated Pytest test cases
+│   ├── requirements.txt     # Python backend dependencies
+│   └── scripts/seed.py      # Demo account and transaction seed utility
 ├── frontend/
 │   ├── src/
-│   │   ├── components/           # Navbar, Sidebar, StatCard, ProgressBar, Modal, etc.
-│   │   ├── pages/                # Landing, Login, Register, Dashboard, Budgets, Analytics, etc.
-│   │   ├── services/             # Centralized Axios client (api.js)
-│   │   ├── context/              # AuthContext, ThemeContext, ToastContext
-│   │   ├── hooks/                # useAuth, useTheme, useCurrency
-│   │   ├── utils/                # Currency formatters, date formatters, constants
-│   │   ├── App.jsx               # Routes and providers
-│   │   ├── main.jsx              # React DOM mount point
-│   │   └── index.css             # Tailwind CSS & custom scrollbars
-│   ├── package.json
-│   ├── vite.config.js
-│   ├── tailwind.config.js
-│   ├── .env.example
-│   └── README.md
-│
-├── .gitignore
-├── README.md
-└── LICENSE
+│   │   ├── components/      # Reusable UI cards, tables, modals, and charts
+│   │   ├── context/         # Auth, Theme, and Toast React contexts
+│   │   ├── pages/           # Dashboard, Transactions, Budgets, Analytics pages
+│   │   ├── services/api.js  # Axios HTTP client with JWT interceptor
+│   │   └── App.jsx          # Route definitions and protected route wrappers
+│   ├── package.json         # Node.js dependencies (React, Recharts, Tailwind)
+│   └── vite.config.js       # Vite build configuration
+├── .gitignore               # Git hygiene filters
+├── render.yaml              # Render.com deployment blueprint
+└── README.md                # Project documentation
 ```
 
 ---
 
-## 💻 Installation & Getting Started
-
-### Prerequisites
-- **Python 3.10+** (Tested on Python 3.14)
-- **Node.js 18+** & **npm**
-- **MySQL Server** (Optional for local testing — if credentials differ, the backend automatically engages SQLite without crashing)
-
----
-
-### Step 1: Backend Setup
-
-#### On Windows PowerShell:
-```powershell
-# 1. Navigate to backend
-cd expense-tracker\backend
-
-# 2. (Optional) Create and activate virtual environment
-python -m venv venv
-.\venv\Scripts\activate
-
-# 3. Install backend dependencies
-pip install -r requirements.txt
-
-# 4. Copy environment example
-Copy-Item .env.example .env
-
-# 5. Initialize and seed database
-python scripts\seed.py
-
-# 6. Start the backend development server
-uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
-```
-
-#### On Windows Command Prompt (CMD):
-```cmd
-cd expense-tracker\backend
-python -m venv venv
-venv\Scripts\activate.bat
-pip install -r requirements.txt
-copy .env.example .env
-python scripts\seed.py
-uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
-```
-
-Backend will be running at: **[http://127.0.0.1:8000](http://127.0.0.1:8000)**  
-Interactive Swagger Docs: **[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)**
-
----
-
-### Step 2: Frontend Setup
-
-Open a second terminal window:
-
-#### On Windows PowerShell / CMD:
-```powershell
-# 1. Navigate to frontend
-cd expense-tracker\frontend
-
-# 2. Install dependencies
-npm.cmd install
-
-# 3. Copy environment example
-Copy-Item .env.example .env
-
-# 4. Start Vite development server
-npm.cmd run dev
-```
-
-Frontend will be running at: **[http://localhost:5173](http://localhost:5173)**
-
----
-
-## 🔑 Demo Credentials
-
-To evaluate the application immediately with realistic data (spanning multiple months, budgets, and categories):
-
-| Credential | Value |
-| :--- | :--- |
-| **Email** | `demo@expensely.com` |
-| **Password** | `Demo@12345` |
-
-> *Tip: You can also click the **"Fill & Login"** button on the Login page to authenticate instantly.*
-
----
-
-## 📖 API Documentation
-
-The backend provides OpenAPI 3.0 documentation:
-- **Swagger UI**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- **ReDoc**: [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
-
-### Core Endpoints Overview
-
-| Method | Endpoint | Description | Protected |
-| :--- | :--- | :--- | :---: |
-| `POST` | `/api/auth/register` | Register a new user | No |
-| `POST` | `/api/auth/login` | Authenticate & receive JWT token | No |
-| `GET` | `/api/auth/me` | Fetch active user profile | Yes |
-| `GET` | `/api/transactions` | Filterable, paginated transaction ledger | Yes |
-| `POST` | `/api/transactions` | Record new transaction | Yes |
-| `GET` | `/api/transactions/{id}` | Retrieve single transaction | Yes |
-| `PUT` | `/api/transactions/{id}` | Update transaction | Yes |
-| `DELETE` | `/api/transactions/{id}` | Remove transaction | Yes |
-| `GET` | `/api/transactions/export` | Download filtered records as CSV | Yes |
-| `GET` | `/api/budgets` | Fetch monthly budgets with usage percentages | Yes |
-| `POST` | `/api/budgets` | Create or update budget | Yes |
-| `GET` | `/api/dashboard/summary` | Real-time KPI cards & warning alerts | Yes |
-| `GET` | `/api/analytics/monthly` | 6-12 month cash flow trendlines | Yes |
-| `GET` | `/api/analytics/categories`| Category spending breakdown | Yes |
-| `GET` | `/api/categories` | List user & system categories | Yes |
-| `POST` | `/api/categories` | Add custom category | Yes |
-| `PUT` | `/api/profile` | Update profile information | Yes |
-| `PUT` | `/api/profile/password` | Secure password update | Yes |
-| `GET` | `/api/settings` | Retrieve user preferences | Yes |
-| `PUT` | `/api/settings` | Save currency & income goals | Yes |
-
----
-
-## 🧪 Running Tests
-
-A comprehensive Pytest test suite validates authentication, JWT enforcement, decimal precision math, budget alert thresholds, cross-tenant isolation, and CSV export:
-
-```powershell
-cd expense-tracker\backend
-python -m pytest tests -v
-```
-
-### Test Suite Coverage:
-- `test_auth.py`: Registration, duplicate email rejection, password confirmation validation, login, token issuance.
-- `test_transactions.py`: CRUD operations, positive amount validation, filtering by type/category/payment method.
-- `test_isolation.py`: Cross-tenant boundary verification — User B cannot read, edit, or delete User A's transactions or budgets.
-- `test_budgets.py`: 80% (`Near Limit`) and 100% (`Over Budget`) automatic alert threshold triggers.
-- `test_calculations.py`: Total balance, net savings, and savings rate arithmetic accuracy.
-- `test_export.py`: RFC-4180 CSV export headers and data integrity.
-
----
-
-## 🧮 Financial Math & Decimal Safety
-
-To prevent floating-point rounding errors common in monetary applications (e.g. `0.1 + 0.2 = 0.30000000000000004`), the backend implements:
-- `Numeric(12, 2)` columns in database storage.
-- Python `Decimal` quantization (`ROUND_HALF_UP`) in the calculation service.
-- Exact formulas:
-  $$\text{Total Balance} = \sum \text{Income} - \sum \text{Expense}$$
-  $$\text{Monthly Savings} = \text{Monthly Income} - \text{Monthly Expense}$$
-  $$\text{Savings Rate} = \left( \frac{\text{Monthly Savings}}{\text{Monthly Income}} \right) \times 100 \quad (\text{if Income} > 0)$$
-
----
-
-## 🔒 Security Highlights
-
-1. **Password Security**: Strong hashing using `bcrypt` with unique salt generation.
-2. **Stateless JWT**: Signed using `HS256` with configurable expiration.
-3. **No Frontend Trust**: The user ID is always extracted securely from the verified JWT payload; frontend-supplied IDs are never trusted.
-4. **Error Sanitization**: Server exceptions are caught by centralized FastAPI exception handlers, returning clean human-readable JSON messages without exposing internal stack traces.
-
----
-
-## 🔮 Future Scope
-
-The following features can be added in future iterations:
-- Recurring transactions and subscription renewal reminders.
-- Receipt scanning using OCR.
-- Multi-user shared household finance tracking.
-- Native mobile application using React Native.
-- Bank API integration via Open Banking.
-
----
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
+## 👤 Author & License
+- **Author:** Kritika Shukla ([@kritika7268](https://github.com/kritika7268))
+- **Email:** shuklakritika7268@gmail.com
+- **License:** Open Source under the MIT License.
