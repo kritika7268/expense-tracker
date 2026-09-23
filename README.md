@@ -59,15 +59,17 @@ Personal financial tracking is commonly hindered by two extremes: rigid, manual 
 
 ## 📸 Screenshots
 
-| Interactive Financial Dashboard | Visual Analytics & Cash Flow Trends |
+| Authentication & Secure Access (Login) | Financial Health Dashboard |
 |:---:|:---:|
-| *(Capture from `http://localhost:5173/dashboard`)* | *(Capture from `http://localhost:5173/analytics`)* |
+| ![Login](screenshots/login.png) | ![Dashboard](screenshots/dashboard.png) |
 
-| Transaction Ledger & Filter Bar | Budget Guardrails & Threshold Warnings |
+| Transaction Ledger & Filter Bar | Visual Financial Analytics |
 |:---:|:---:|
-| *(Capture from `http://localhost:5173/transactions`)* | *(Capture from `http://localhost:5173/budgets`)* |
+| ![Transactions](screenshots/transactions.png) | ![Analytics](screenshots/analytics.png) |
 
-> 📁 *Recommended screenshot folder:* Place captured PNG files in `screenshots/` (e.g., `screenshots/dashboard.png`, `screenshots/analytics.png`, `screenshots/transactions.png`, `screenshots/budgets.png`).
+| Budget Guardrails & Threshold Warnings |
+|:---:|
+| ![Budget](screenshots/budget.png) |
 
 ---
 
